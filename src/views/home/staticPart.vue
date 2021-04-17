@@ -48,7 +48,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@import '../../style/mixins.scss';//换行省略
+@import '../../style/mixins.scss';//换行
 .position{
   padding: .16rem .16rem .16rem 0;
   position: relative;
