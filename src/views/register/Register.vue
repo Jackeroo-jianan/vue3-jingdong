@@ -10,23 +10,30 @@
         type="text"
         class="wrapper__input__text"
         placeholder="请输入用户名"
-        v-model="data.username"
+        v-model="registerData.username"
       />
     </div>
     <div class="wrapper__input">
       <input
         type="password"
         class="wrapper__input__text"
-        placeholder="请输入密码"
-        v-model="data.password"
+        placeholder="输入注册密码"
+        v-model="registerData.password"
+      />
+    </div>
+    <div class="wrapper__input">
+      <input
+        type="password"
+        class="wrapper__input__text"
+        placeholder="确认注册密码"
+        v-model="registerData.ensurement"
       />
     </div>
 
-    <div class="wrapper__login" @click="handleLogin">登录</div>
+    <div class="wrapper__register" @click="handleRegister">注册</div>
     <div class="wrapper__tips">
-      <div @click="handleToRegister">立即注册</div>
+      <div @click="handleToLogin">已有账号前去登录</div>
     </div>
-
     <Toast v-if="toastData.showToast" :message="toastData.toastMessage" />
   </div>
 </template>
@@ -37,74 +44,69 @@ import { reactive } from "vue";
 import { post } from "../../utils/request";
 import Toast, { toastMoudle } from "../../components/Toast";
 
-//登录部分
-const loginMoudle = (changeToast) => {
-  const router = useRouter(); //通过useRouter()获取路由实例
-  const data = reactive({
+//注册部分
+const registerMoudel = (changeToast) => {
+  const registerData = reactive({
     username: "",
     password: "",
+    ensurement: "",
   });
-
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const { username,password } = data;
-      if (username.length === 0||password.length === 0){
-          changeToast("用户名或密码不能为空");
-          return false
+      const { username, password } = registerData;
+      if (username.length === 0 || password.length === 0) {
+        changeToast("用户名或密码不能为空");
+        return false;
       }
-      const result = await post("/api/user/login", {
-        username: data.username,
-        password: data.password,
+      const result = await post("/api/user/register", {
+        username: registerData.username,
+        password: registerData.password,
+        ensurement: registerData.ensurement,
       });
-      if (result?.data?.errno === 0) {
-        localStorage.isLogin=true
-        router.push({ name: "Home" });
+      if (registerData.password !== registerData.ensurement) {
+        changeToast("请重新确认密码");
+      } else if (result?.data?.errno === 0) {
+        changeToast("注册成功");
       } else {
-        changeToast("登录失败");
+        changeToast("注册失败");
       }
     } catch (e) {
       changeToast("请求失败");
     }
   };
-  return { data, handleLogin };
+  return { registerData, handleRegister };
 };
 
-//注册部分
-const registerMoudel = () => {
+//跳转部分
+const toLogin = () => {
   const router = useRouter();
-  const handleToRegister = () => {
-    router.push({ name: "Register" });
-  };
-  return { handleToRegister };
-};
 
+  const handleToLogin = () => {
+    router.push({ name: "Login" });
+  };
+  return { handleToLogin };
+};
 
 export default {
-  name: "Login",
+  name: "Register",
   components: { Toast },
 
   setup() {
     const { toastData, changeToast } = toastMoudle();
-    const { data, handleLogin } = loginMoudle(changeToast);
-    const { handleToRegister } = registerMoudel();
+    const { registerData, handleRegister } = registerMoudel(changeToast);
+    const { handleToLogin } = toLogin();
 
-    /* promise版本
-        const handleLogin=()=>{
-            axios.post('https://www.fastmock.site/mock/ae8e9031947a302fed5f92425995aa19/jd/api/user/login',{
-            username:data.username,
-            password:data.password
-            }).then(()=>{
-                localStorage.isLogin=true;
-                router.push({ name:'Home' })
-            }).catch(()=>{
-                alert("登录失败")
-            })
-        }*/
-
-    return { handleLogin, data, changeToast, toastData, handleToRegister };
+    return {
+      handleToLogin,
+      handleRegister,
+      changeToast,
+      toastData,
+      registerData,
+    };
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 * {
@@ -152,7 +154,7 @@ export default {
     }
   }
 }
-.wrapper__login {
+.wrapper__register {
   width: 100%;
   height: 0.48rem;
   margin: 0.32rem 0 0.16rem 0;

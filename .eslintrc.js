@@ -37,6 +37,7 @@ module.exports = {
     'no-multi-spaces':'off',
     'no-unused-vars':'off',
     'camelcase ':'off',
-    'object-curly-newline':'off'
+    'object-curly-newline':'off',
+    'object-property-newline':'off'
  }
 }

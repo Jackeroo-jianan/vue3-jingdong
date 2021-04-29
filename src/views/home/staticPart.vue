@@ -47,7 +47,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../style/mixins.scss';//换行
 .position{
   padding: .16rem .16rem .16rem 0;

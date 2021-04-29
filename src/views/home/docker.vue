@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .docker{
   display: flex;
   box-sizing: border-box;
