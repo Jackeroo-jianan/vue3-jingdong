@@ -1,4 +1,4 @@
-# jingdong
+# mall
 
 ## Project setup
 ```
