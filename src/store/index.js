@@ -1,11 +1,20 @@
-import { createStore } from 'vuex'
+import Vuex from 'vuex'
 
-export default createStore({
+const setLocalCartList = (state) => {
+  const { cartList } = state
+  const cartListString = JSON.stringify(cartList)
+  localStorage.cartList = cartListString
+}
+
+const getLocalCartList = () => {
+  return JSON.parse(localStorage.cartList) || {}
+}
+
+export default Vuex.createStore({
   state: {
     
-    cartList:{
+    cartList:getLocalCartList()
       /*
-      
        shopId:{
             shopName:'xxx'
             productList{
@@ -17,55 +26,66 @@ export default createStore({
                     oldprice: 39.6,
                     count:1
                   }
-            }
-            
-        */
-      }
+            }     
+      */
+      
   },
   mutations: {
     changeItemToCart(state,payload){
-      const { shopId,productId,productInfo
-       }=payload;
-       
-      let shopInfo = state.cartList[shopId]
-      if(!shopInfo) { shopInfo= {} }
+      const { shopId,productId,productInfo }=payload;
+      const shopInfo = state.cartList[shopId] || {
+        shopName:'',productList: {}
+      }
+      //if(!shopInfo) { shopInfo= {} }
 
-      let product = shopInfo[productId]
+      let product = shopInfo.productList[productId]
       if(!product) {
-        product = productInfo
-        product.count = 0  
+        productInfo.count = 0 
+        product = productInfo    
       }
 
       product.count = product.count + payload.num
       if (payload.num > 0){product.check = true}
       if (product.count<0){product.count=0}
-      shopInfo[productId] = product
+      shopInfo.productList[productId] = product
       state.cartList[shopId] = shopInfo
-      console.log(shopInfo)  
+      setLocalCartList(state)
+    },
+
+    changeShopName(state,payload){
+        const { shopId,shopName } = payload
+        const shopInfo = state.cartList[shopId] || {
+          shopName:'',productList:{}
+        }
+        shopInfo.shopName = shopName
+        state.cartList[shopId] = shopInfo
+        setLocalCartList(state)
     },
 
     changeProductCheck(state,payload){
       const { shopId,productId } = payload
-      const product = state.cartList[shopId][productId]
+      const product = state.cartList[shopId].productList[productId]
       product.check = !product.check
+      setLocalCartList(state)
     },
 
     cleanProductList(state,payload){
       const { shopId } =payload
-      state.cartList[shopId]={}
+      state.cartList[shopId].productList={}
+      setLocalCartList(state)
     },
+
 
     setAllSelected(state,payload){
       const{ shopId } = payload
-      const products = state.cartList[shopId]
+      const products = state.cartList[shopId].productList
       if(products){
         for (const key in products){
           const product = products[key]
           product.check = true
         }
       }
-
-
+      setLocalCartList(state)
     }
 
   },

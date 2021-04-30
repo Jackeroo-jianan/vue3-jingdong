@@ -10,7 +10,7 @@
     </div>
     <ShopInfo :item='item' :hideBorder='true' v-show='item.imgUrl'/>
     <!-- 属性传给子组件  隐藏分界线  防止出现裂图效果 -->
-    <Content/>
+    <Content :shopName="item.name"/>
     <Cart/>
 </div>
 

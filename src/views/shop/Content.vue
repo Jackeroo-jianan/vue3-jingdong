@@ -17,17 +17,16 @@
                     <p class="product__item__sales">月售{{item.sales}}件</p>
                     <div class="product__item__price">
                         <span class='newPrice'>￥{{item.price}}</span>
-                        <span class='origanPrice'>￥{{item.oldprice}}</span>
-                        
+                        <span class='origanPrice'>￥{{item.oldprice}}</span>    
                     </div>
                 </div>
                 <div class='shopNums'>
                     <span class='decrease'
-                     @click="() => { changeItemToCart(shopId, item._id, item, -1) }"
+                     @click="() => { changeCartItem(shopId, item._id, item, -1,shopName) }"
                      >-</span>   
-                    <span class='nums'>{{ cartList?.[shopId]?.[item._id]?.count || 0 }}</span>
+                    <span class='nums'>{{ getCartProductCount(shopId,item._id) }}</span>
                     <span class='increase'
-                    @click="() => { changeItemToCart(shopId, item._id, item, 1) }"
+                    @click="() => { changeCartItem(shopId, item._id, item, 1,shopName) }"
                     >+</span> 
                 </div>
             </div>
@@ -39,8 +38,9 @@
 <script>
 import { useRoute } from 'vue-router'
 import { reactive ,toRefs } from 'vue'
+import { useStore } from 'vuex'
 import { get } from '../../utils/request'
-import { commonCartMoudle } from './commonCartMoudle'
+import { commonCartMoudle } from "../../commonMoudel/commonCartMoudle";
 
 const categories = [
            { name:'全部商品', tab:'all' },
@@ -64,17 +64,39 @@ const useListMouele=(shopId)=>{
         return { contentList,categories,handleCategoryClick }
 }
 
+//购物车组件
+const useCartMoudle = ()=>{
+        const store = useStore()
+        const { changeItemToCart,cartList } = commonCartMoudle()
+        const changeShopName = (shopId,shopName)=>{
+            store.commit('changeShopName',{
+                shopId,shopName
+            })
+        }        
+        const changeCartItem = (shopId, productId, item,num,shopName)=>{
+                changeItemToCart(shopId, productId, item,num)
+                changeShopName(shopId,shopName)       
+        }
+        const getCartProductCount = (shopId,productId)=>{
+            return cartList?.[shopId]?.productList?.[productId]?.count || 0
+
+        }
+
+        return { changeShopName,changeCartItem,cartList,getCartProductCount }
+}
 
 
 export default {
     name:'Content',
+    props:['shopName'],
     setup(){
         const route = useRoute()
         const shopId = route.params.id
         const { contentList,categories,handleCategoryClick }=useListMouele(shopId)
-        const { changeItemToCart,cartList } = commonCartMoudle()
+        const { changeShopName,changeCartItem,cartList,getCartProductCount  } = useCartMoudle()
+    
         return{ contentList,categories,handleCategoryClick,
-         shopId,changeItemToCart,cartList }
+         shopId,changeShopName,cartList,changeCartItem,getCartProductCount }
     }
 }
 </script>

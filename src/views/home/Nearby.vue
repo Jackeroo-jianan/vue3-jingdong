@@ -1,24 +1,11 @@
 <template>
 <h3 class='tip'>附近店铺</h3>
  <router-link 
-  :to= "`/shop/${item._id}`" 
   v-for='item in nearbyList' 
-  :key="item._id">
+  :key="item._id"
+  :to =" `/shop/${item._id}`" >
  <ShopInfo 
   :item='item'/> 
-   <!-- <div class="nearby" v-for='item in nearbyList' :key="item._id">
-     <img :src='item.imgUrl'>
-     <div class="nearby__item">
-       <div class='shop'>{{item.name}}</div>
-       <div class="sale">
-        <span class="sale">月售: {{item.sales}}</span>
-        <span class="sale">起送: {{item.expressLimit}}</span>
-        <span class="sale">基础运费: {{item.expressPrice}}</span>
-       </div>
-       <div class='discount'>{{item.slogan}}</div>
-     <div class=gap2></div>
-     </div>
-      </div>  -->
 </router-link>
 </template>
 

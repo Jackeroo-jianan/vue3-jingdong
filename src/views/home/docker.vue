@@ -3,9 +3,10 @@
      
     <span :class="{'docker__item':true,'docker__item--active':index==0?true:false}"
       v-for='(item , index) in dockerList' :key="index">
-
+      <router-link :to='item.to'>
       <div class="iconfont" v-html='item.icon'></div>
       <div class="docker__title">{{item.text}}</div>
+      </router-link>
       </span>
     
   </div>
@@ -16,10 +17,10 @@ export default {
   name: 'Docker',
   setup(){
     const dockerList=[
-    { icon:'&#xe6f1;', text: '首页' } ,
-    { icon:'&#xe671;', text: '订单' } ,
-    { icon:'&#xe603;', text: '购物车' } ,
-    { icon:'&#xe604;', text : '我的' } ,
+    { icon:'&#xe6f1;', text: '首页',to:{ name:'Home' } } ,
+    { icon:'&#xe603;', text: '购物车' ,to:{ name:'CartContent' } } ,
+    { icon:'&#xe671;', text: '订单',to:{ name:'Home' } } ,
+    { icon:'&#xe604;', text : '我的',to:{ name:'Home' } } ,
     ];
   return{ dockerList }
   }
@@ -27,6 +28,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a{
+  text-decoration: none;
+  color: #000000 ;
+}
 .docker{
   display: flex;
   box-sizing: border-box;
@@ -46,6 +51,10 @@ export default {
 }
   &--active{
     color:#1FA4FC;
+    a{
+      text-decoration: none;
+      color:#1FA4FC;
+}
   }
   }
 &__title{

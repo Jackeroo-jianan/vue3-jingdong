@@ -6,9 +6,9 @@
    <Docker/>
 </template>
 <script>
-import StaticPart from './staticPart'
+import StaticPart from './StaticPart'
 import Nearby from './Nearby'
-import Docker from './docker'
+import Docker from './Docker'
 export default {
   name: 'Home',
   components: { StaticPart, Nearby, Docker }

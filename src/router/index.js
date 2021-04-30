@@ -7,6 +7,21 @@ const routes = [
     component: () => import(/*webpackChunkName:"home"*/ '../views/home/Home')
   },
   {
+    path: '/shop/:id',
+    name: 'Shop',
+    component: () => import(/*webpackChunkName:"shop"*/ '../views/shop/Shop')
+  },
+  {
+    path: '/cartContent',
+    name: 'CartContent',
+    component: () => import(/*webpackChunkName:"cartContent"*/ '../views/cartContent/CartContent')
+  },
+  {
+    path: '/orderConfirm/:id',
+    name: 'OrderConfirm',
+    component: () => import(/*webpackChunkName:"orderConfirm"*/ '../views/orderConfirm/OrderConfirm')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import(/*webpackChunkName:"register"*/ '../views/register/Register')
@@ -18,16 +33,11 @@ const routes = [
 
     //在已经登陆后再次尝试进入登陆界面返回首页
     beforeEnter(to,from,next){//beforeEach()钩子函数一般用来设置路由拦截，进入某一路由时执行
-      const { isLogin } = localStorage; //const  isLogin  = localStorage.isLogin 解构赋值
+      const { isLogin } = localStorage; 
        (isLogin) ? next({ name:'Home' }):next()  
     }
-  },
-  {
-    path: '/shop/:id',
-    name: 'Shop',
-    component: () => import(/*webpackChunkName:"shop"*/ '../views/shop/Shop')
-  },
- 
+  }
+  
 ]
 
 const router = createRouter({

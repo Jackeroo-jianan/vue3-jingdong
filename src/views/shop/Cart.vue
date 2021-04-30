@@ -1,7 +1,7 @@
 <template>
 <div class="mask" v-if='showCart' @click="changeShowCart"></div>
   <div class="cart">
-    <div class="product" v-if='showCart'>
+    <div class="product" v-if='showCart '>
       <div class="product__header">
           <div class="product__header__all">
             <span class='iconfont selectall'
@@ -69,10 +69,10 @@
       </div>
 
       <div class="cart__info">
-        总计: &nbsp;<span class="cart__cost">&yen; {{ price }}</span>
+        总计: &nbsp;<span class="cart__cost">&yen; {{ getPrice }}</span>
       </div>
       <div class="cart__balance">
-        <router-link :to = "{name:'Home'}">
+        <router-link :to ="{path:`/orderConfirm/${shopId}`}" >
         去结算
         </router-link>
         </div>
@@ -84,14 +84,14 @@
 import { computed,ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { commonCartMoudle } from "./commonCartMoudle";
+import { commonCartMoudle } from "../../commonMoudel/commonCartMoudle";
 
 //购物车组件
 const useCartMoudle = (shopId) => {
   const store = useStore();
   const cartList = store.state.cartList;
   const total = computed(() => {
-    const productList = cartList[shopId];
+    const productList = cartList[shopId]?.productList;
     let count = 0;
     if (productList) {
       for (const i in productList) {
@@ -101,22 +101,9 @@ const useCartMoudle = (shopId) => {
     }
     return count;
   });
-  const price = computed(() => {
-    const productList = cartList[shopId];
-    let count = 0;
-    if (productList) {
-      for (const i in productList) {
-        const product = productList[i];
-        if (product.check) {
-          count += product.count * product.price;
-        }
-      }
-    }
-    return count.toFixed(2);
-  });
 
   const allChecked = computed(() => {
-    const productList = cartList[shopId];
+    const productList = cartList[shopId]?.productList;
     let result = true;
     if (productList) {
       for (const i in productList) {
@@ -130,7 +117,7 @@ const useCartMoudle = (shopId) => {
   });
 
   const productList = computed(() => {
-    const productList = cartList[shopId] || [];
+    const productList = cartList[shopId]?.productList || [];
     return productList;
   });
 
@@ -150,8 +137,7 @@ const useCartMoudle = (shopId) => {
         })
   };
 
-
-  return { total, price, productList, changeProductCheck,
+  return { total, productList, changeProductCheck,
   cleanProductList,allChecked,setAllSelected };
 };
 
@@ -169,13 +155,13 @@ export default {
   setup() {
     const route = useRoute();   
     const shopId = route.params.id;
-    const { changeItemToCart } = commonCartMoudle();
+    const { changeItemToCart,getPrice } = commonCartMoudle(shopId);
     const { showCart, changeShowCart } = showProductsInCart()
-    const { total, price, productList, changeProductCheck,cleanProductList,allChecked,setAllSelected } = useCartMoudle(shopId);
+    const { total, productList, changeProductCheck,cleanProductList,allChecked,setAllSelected } = useCartMoudle(shopId);
     return {
       shopId,
       total,
-      price,
+      getPrice,
       productList,
       changeProductCheck,
       changeItemToCart,
