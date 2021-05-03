@@ -19,8 +19,6 @@ import ShopInfo from '../../components/Shopinfo'
     const nearbyList=ref([]);
     const getNearbyList=async()=>{
       const result = await get("/api/shop/hot-list")
-      //console.log(result)
-      //console.log(nearbyList)
       if (result?.data?.errno === 0) {
         nearbyList.value = result.data.data
       }   

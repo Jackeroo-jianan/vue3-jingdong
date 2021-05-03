@@ -1,7 +1,7 @@
 <template>
    <div class="docker">
      
-    <span :class="{'docker__item':true,'docker__item--active':index==0?true:false}"
+    <span :class="{'docker__item':true,'docker__item--active':index==pageIndex?true:false}"
       v-for='(item , index) in dockerList' :key="index">
       <router-link :to='item.to'>
       <div class="iconfont" v-html='item.icon'></div>
@@ -15,12 +15,13 @@
 <script>
 export default {
   name: 'Docker',
+  props:['pageIndex'],
   setup(){
     const dockerList=[
     { icon:'&#xe6f1;', text: '首页',to:{ name:'Home' } } ,
     { icon:'&#xe603;', text: '购物车' ,to:{ name:'CartContent' } } ,
-    { icon:'&#xe671;', text: '订单',to:{ name:'Home' } } ,
-    { icon:'&#xe604;', text : '我的',to:{ name:'Home' } } ,
+    { icon:'&#xe671;', text: '订单',to:{ name:'MyOrder' } } ,
+    { icon:'&#xe604;', text : '我的',to:{ name:'Myself' } } ,
     ];
   return{ dockerList }
   }

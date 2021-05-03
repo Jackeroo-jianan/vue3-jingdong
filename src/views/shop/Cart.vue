@@ -71,7 +71,7 @@
       <div class="cart__info">
         总计: &nbsp;<span class="cart__cost">&yen; {{ getPrice }}</span>
       </div>
-      <div class="cart__balance">
+      <div class="cart__balance" v-show="total>0">
         <router-link :to ="{path:`/orderConfirm/${shopId}`}" >
         去结算
         </router-link>

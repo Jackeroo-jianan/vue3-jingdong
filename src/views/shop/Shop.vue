@@ -45,7 +45,7 @@ const useShopInfoMoudle=()=>{
 const backMoudel = ()=>{
     const router =useRouter()
     const handleBack=()=>{
-            router.back()
+            router.push({ name: "Home" });
         }
         return { handleBack }
 }

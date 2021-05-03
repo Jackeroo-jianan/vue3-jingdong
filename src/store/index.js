@@ -7,7 +7,11 @@ const setLocalCartList = (state) => {
 }
 
 const getLocalCartList = () => {
-  return JSON.parse(localStorage.cartList) || {}
+  try {
+    return JSON.parse(localStorage.cartList) 
+  } catch(e){
+    return {}
+  }
 }
 
 export default Vuex.createStore({
@@ -86,6 +90,11 @@ export default Vuex.createStore({
         }
       }
       setLocalCartList(state)
+    },
+
+    cleanThisCart(state,payload){
+      const { shopId } = payload
+      state.cartList[shopId].productList = {} 
     }
 
   },
