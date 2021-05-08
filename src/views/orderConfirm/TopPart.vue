@@ -1,40 +1,53 @@
 <template>
-    <div class="top">
+  <div class="top">
     <div class="top__bgcor">
       <div class="top__header">
-        <span class="top__header__iconfont iconfont"
-        @click="handleBackClick">&#xe697;</span>
+        <span class="top__header__iconfont iconfont" @click="handelClickBack"
+          >&#xe697;</span
+        >
         确认订单
       </div>
     </div>
 
     <div class="top__receive">
       <h4 class="top__receive__title">收货地址</h4>
-      <div class="top__receive__address">首都师范大学校本部理科楼</div>
-      <div class="top__receive__personInfo">
-        <span class="name">张先生</span>
-        <span class="phone">13912345678</span>
+      <div class="top__receive__address">
+        {{ address.city }} {{ address.area }} {{ address.houseNumber }}
       </div>
-      <span class="top__receive__iconfont iconfont">&#xe60c;</span>
+      <div class="top__receive__personInfo">
+        <span class="name">{{ address.name }}</span>
+        <span class="phone">{{ address.phone }}</span>
+      </div>
+      <router-link :to="{ path: `/myAddress` }">
+        <span
+          class="top__receive__iconfont iconfont"
+          @click="handleClickMyAddress"
+          >&#xe60c;</span
+        >
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useStore } from "vuex";
+import { AddressListMoudle } from "../../commonMoudel/commonAddressMoudle";
 
 export default {
-    name:'TopPart',
-    setup(){
-      const router = useRouter()
-      const handleBackClick=()=>{router.back()}
-      return  { handleBackClick }
-  }
-}
+  name: "TopPart",
+
+  setup() {
+    const store = useStore();
+    const { handelClickBack } = AddressListMoudle();
+
+    const address = store.state.addressList;
+    return { handelClickBack, address };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-    .top {
+.top {
   height: 1.96rem;
   position: relative;
 }
@@ -50,7 +63,7 @@ export default {
   color: #ffffff;
   .top__header__iconfont {
     position: absolute;
-    left: 0.18rem;
+    left: 0.15rem;
     font-size: 0.2rem;
     line-height: 0.18rem;
   }
@@ -73,6 +86,7 @@ export default {
     font-size: 0.14rem;
     color: #333333;
     margin: 0 0 0.06rem 0.16rem;
+    width: 80%;
   }
   .top__receive__personInfo {
     margin-left: 0.16rem;
@@ -86,7 +100,7 @@ export default {
 .top__receive__iconfont {
   position: absolute;
   right: 0.3rem;
-  bottom: 0.6rem;
+  top: 0.15rem;
   color: #666666;
   font-size: 0.18rem;
 }

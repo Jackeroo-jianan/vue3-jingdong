@@ -2,7 +2,7 @@
     <div class="content">
         <div class="content__category" >
             <div class="content__category__item" 
-             v-for = 'item in categories'
+             v-for ='item in categories'
             :key="item.name"
             @click='()=>handleCategoryClick(item.tab)'>
             {{item.name}}</div>
@@ -92,6 +92,7 @@ export default {
     setup(){
         const route = useRoute()
         const shopId = route.params.id
+        
         const { contentList,categories,handleCategoryClick }=useListMouele(shopId)
         const { changeShopName,changeCartItem,cartList,getCartProductCount  } = useCartMoudle()
     

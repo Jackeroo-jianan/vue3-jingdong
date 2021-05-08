@@ -27,6 +27,21 @@ const routes = [
     component: () => import(/*webpackChunkName:"myOrder"*/ '../views/myself/Myself')
   },
   {
+    path: '/myAddress',
+    name: 'MyAddress',
+    component: () => import(/*webpackChunkName:"myAddress"*/ '../views/myAddress/MyAddress')
+  },
+  {
+    path: '/editAddress/:id',
+    name: 'EditAddress',
+    component: () => import(/*webpackChunkName:"editAddress"*/ '../views/myAddress/EditAddress')
+  },
+  {
+    path: '/NewAddress',
+    name: 'NewAddress',
+    component: () => import(/*webpackChunkName:"newAddress"*/ '../views/myAddress/NewAddress')
+  },
+  {
     path: '/orderConfirm/:id',
     name: 'OrderConfirm',
     component: () => import(/*webpackChunkName:"orderConfirm"*/ '../views/orderConfirm/OrderConfirm')

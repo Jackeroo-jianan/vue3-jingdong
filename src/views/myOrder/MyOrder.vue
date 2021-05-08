@@ -37,7 +37,7 @@ const useOrderListMoudle = ()=>{
         const result = await get('/api/order/review')
         if (result?.data?.errno === 0 && result?.data?.data?.length){
             const orderList = result.data.data
-            console.log(orderList)
+            //console.log(orderList)
             orderList.forEach((orderFactor) => {
                 const products = orderFactor.products
                 let totalPrice = 0
@@ -50,7 +50,7 @@ const useOrderListMoudle = ()=>{
                orderFactor.totalCount = totalCount
             });
             data.list = result.data.data
-            console.log(data.list)
+            //console.log(data.list)
         }
         
         
@@ -94,9 +94,6 @@ export default {
     text-align: center;
     line-height: 0.44rem;
     background: #FFFFFF
-}
-.orders{
-
 }
 .order{
     padding:0.16rem ;

@@ -11,10 +11,15 @@
 import TopPart from './TopPart'
 import ProductPart from './ProductPart'
 import OrderPart from './OrderPart'
+import { AddressListMoudle } from '../../commonMoudel/commonAddressMoudle'
 
 export default {
   name: "OrderConfirm",
    components:{ TopPart,ProductPart,OrderPart },
+   setup(){
+     const { getExistAddressList } = AddressListMoudle()
+      getExistAddressList()
+   }
 };
 </script>
 

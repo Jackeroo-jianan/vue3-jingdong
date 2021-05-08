@@ -22,8 +22,11 @@ import ShopInfo from '../../components/Shopinfo'
       if (result?.data?.errno === 0) {
         nearbyList.value = result.data.data
       }   
+      //console.log(result)
     }
+    
     getNearbyList()
+    //console.log(nearbyList)
     return { nearbyList, getNearbyList }
   }
 export default {
